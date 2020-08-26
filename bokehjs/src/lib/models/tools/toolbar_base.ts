@@ -43,10 +43,10 @@ export class ToolbarViewModel extends Model {
   }
 
   static init_ToolbarViewModel(): void {
-    this.define<ToolbarViewModel.Props>({
-      _visible: [ p.Any,     null  ],
-      autohide: [ p.Boolean, false ],
-    })
+    this.define<ToolbarViewModel.Props>(({Boolean, Nullable}) => ({
+      _visible: [ Nullable(Boolean), null ],
+      autohide: [ Boolean, false ],
+    }))
   }
 
   get visible(): boolean {
@@ -218,19 +218,19 @@ export class ToolbarBase extends Model {
   static init_ToolbarBase(): void {
     this.prototype.default_view = ToolbarBaseView
 
-    this.define<ToolbarBase.Props>({
-      tools:      [ p.Array,   []       ],
-      logo:       [ p.Logo,    'normal' ], // TODO (bev)
-      autohide:   [ p.Boolean, false    ],
-    })
+    this.define<ToolbarBase.Props>(({Boolean, Array, Ref}) => ({
+      tools:    [ Array(Ref(Tool)), [] ],
+      logo:     [ Logo, "normal" ],
+      autohide: [ Boolean, false ],
+    }))
 
-    this.internal({
-      gestures:         [ p.Any,      createGestureMap ],
-      actions:          [ p.Array,    []      ],
-      inspectors:       [ p.Array,    []      ],
-      help:             [ p.Array,    []      ],
-      toolbar_location: [ p.Location, 'right' ],
-    })
+    this.internal<ToolbarBase.Props>(({Array, Ref}) => ({
+      gestures:         [ p.Any, createGestureMap ],
+      actions:          [ Array(Ref(ActionTool)), [] ],
+      inspectors:       [ Array(Ref(InspectTool)), [] ],
+      help:             [ Array(Ref(HelpTool)), [] ],
+      toolbar_location: [ Location, "right" ],
+    }))
   }
 
   _proxied_tools?: (Tool | ToolProxy)[]

@@ -5,7 +5,9 @@ import * as p from "core/properties"
 export namespace LinearScale {
   export type Attrs = p.AttrsOf<Props>
 
-  export type Props = ContinuousScale.Props
+  export type Props = ContinuousScale.Props & {
+    scan_result: p.Property<any>
+  }
 }
 
 export interface LinearScale extends LinearScale.Attrs {}
@@ -18,7 +20,9 @@ export class LinearScale extends ContinuousScale {
   }
 
   static init_LinearScale(): void {
-    this.internal({scan_result: [ p.Any ]})
+    this.internal<LinearScale.Props>({
+      scan_result: [ p.Any ],
+    })
   }
 
   compute(x: number): number {
